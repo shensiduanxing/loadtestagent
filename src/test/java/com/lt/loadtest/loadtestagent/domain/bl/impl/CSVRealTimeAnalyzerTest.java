@@ -24,6 +24,7 @@ public class CSVRealTimeAnalyzerTest {
 	@Test
 	public void test() {
 		String logFilePath = "/Users/marsliutao/Blur/cloudpi/sample1.csv";
+		logFilePath = "/tmp/118_http_C200_L30000_20130516102132.csv";
 		File file= new File(logFilePath);
 		long size = file.length();
 		String str = CSVRealTimeAnalyzer.getAnalyzableLines(file, 0, size);
@@ -33,6 +34,7 @@ public class CSVRealTimeAnalyzerTest {
 	@Test
 	public void testGetLastEOFPos(){
 		String logFilePath = "/Users/marsliutao/Blur/cloudpi/sample1.csv";
+		logFilePath = "/tmp/118_http_C200_L30000_20130516102132.csv";
 		File file= new File(logFilePath);
 		long startPos = 0;
 		long fileSize = file.length();
@@ -41,7 +43,7 @@ public class CSVRealTimeAnalyzerTest {
 		startPos = 0;
 		long endPos = lastEofPos;
 		String str = CSVRealTimeAnalyzer.getAnalyzableLines(file, startPos, endPos);
-		System.out.println("str1="+str);
+		//System.out.println("str1="+str);
 		
 		str = CSVRealTimeAnalyzer.getAnalyzableLines(file, lastEofPos+1, fileSize);
 		System.out.println("str2="+str);

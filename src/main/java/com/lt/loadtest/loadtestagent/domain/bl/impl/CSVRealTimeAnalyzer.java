@@ -98,7 +98,6 @@ public class CSVRealTimeAnalyzer {
 						filedata.get(buffer, 0, len);
 						String str = new String(buffer);
 						sb.append(str);
-						System.out.println("str="+str);
 					}
 				}
 			}
@@ -109,7 +108,6 @@ public class CSVRealTimeAnalyzer {
 			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
-
 		return sb.toString();
 	}
 	public static long getLastEOFPos(File file, long startPos, long size){
@@ -144,8 +142,9 @@ public class CSVRealTimeAnalyzer {
 					char c = (char)buffer[i];
 					System.out.println("==========i="+i+"==ch="+c);
 					if(c == '\n'){
+						lastEOFPos = mapStartPos + i;
+						System.out.println("lastEOFPosTmp="+lastEOFPos);
 						if(lastEOFPos!=(mapStartPos+mapSize-1)){
-							lastEOFPos = mapStartPos + i;
 							System.out.println("mapStartPos+mapSize="+(mapStartPos+mapSize));
 							System.out.println("==========lastEOFPos="+lastEOFPos+" is EOF");
 						    break;
@@ -184,7 +183,7 @@ public class CSVRealTimeAnalyzer {
 			fc = fis.getChannel();
 			fileSize = fc.size();
 			endPos = fileSize;
-			
+			System.out.println("fileSize="+fileSize);
 			while(true && startPos<endPos){
 				try {
 					//Step1: Get current analayzable lines
@@ -196,10 +195,14 @@ public class CSVRealTimeAnalyzer {
 					
 					System.out.println(String.format("start=%s,endPos=%s,lastEOFPos=%s,size=%s", startPos, endPos, lastEOFPos, size));
 					
-					MappedByteBuffer filedata = fc.map (MapMode.READ_ONLY, startPos, size);
-					Callable<Integer> worker = new LogAnalyzeThread(filedata);
-					Future<Integer> submit = executorService.submit(worker);
-					resultList.add(submit);
+					String analyzableLines = getAnalyzableLines(file, startPos, lastEOFPos);
+					String strFilePath = "/tmp/" + System.currentTimeMillis()+".txt";
+					try {
+						FileUtil.saveContentToFile(analyzableLines, strFilePath);
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 
 					startPos = lastEOFPos+1;
 					
@@ -279,13 +282,6 @@ class LogAnalyzeThread implements Callable<Integer> {
 			this.filedata.get(buffer, 0, len);
 			String str = new String(buffer);
 			sb.append(str);
-			String[] logLines = str.split("\n");
-			if(logLines!=null && logLines.length<3000){
-				for(int i=0;i<logLines.length;i++){
-					//System.out.println(logLines[i]);
-				}
-			}
-			count+=logLines.length;
 		}
 		String strFilePath = "/tmp/" + System.currentTimeMillis()+".txt";
 		try {
