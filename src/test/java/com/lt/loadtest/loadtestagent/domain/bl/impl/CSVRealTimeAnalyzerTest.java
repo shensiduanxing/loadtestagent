@@ -27,8 +27,26 @@ public class CSVRealTimeAnalyzerTest {
 		logFilePath = "/tmp/118_http_C200_L30000_20130516102132.csv";
 		File file= new File(logFilePath);
 		long size = file.length();
+		size = 5034053;
 		String str = CSVRealTimeAnalyzer.getAnalyzableLines(file, 0, size);
 		System.out.println("str="+str);
+	}
+	
+	@Test
+	public void testGetPosChar(){
+		String logFilePath = "/Users/marsliutao/Blur/cloudpi/sample1.csv";
+		logFilePath = "/tmp/118_http_C200_L30000_20130516102132.csv";
+		File file= new File(logFilePath);
+		long pos = 5034053L;
+		char ch = CSVRealTimeAnalyzer.getPosChar(file, pos);
+		System.out.println("ch="+ch);
+		if(ch=='\n'){
+			System.out.println("ch is EOF");
+		}
+		long startPos = 0;
+		long endPos = pos;
+		String lines = CSVRealTimeAnalyzer.getAnalyzableLines(file, startPos, endPos);
+		System.out.println("lines"+lines);
 	}
 
 	@Test

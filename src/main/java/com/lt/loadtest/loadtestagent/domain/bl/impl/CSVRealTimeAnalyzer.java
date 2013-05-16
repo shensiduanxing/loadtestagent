@@ -140,7 +140,7 @@ public class CSVRealTimeAnalyzer {
 				filedata.get(buffer, 0, len);
 				for(int i=len-1;i>0;i--){
 					char c = (char)buffer[i];
-					System.out.println("==========i="+i+"==ch="+c);
+					//System.out.println("==========i="+i+"==ch="+c);
 					if(c == '\n'){
 						lastEOFPos = mapStartPos + i;
 						System.out.println("lastEOFPosTmp="+lastEOFPos);
