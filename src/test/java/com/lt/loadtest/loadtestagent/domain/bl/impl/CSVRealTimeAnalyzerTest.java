@@ -99,13 +99,10 @@ public class CSVRealTimeAnalyzerTest {
 		System.out.println("LastEofPos="+pos);
 	}
 	
-	
 	@Test
 	public void testAnalyzeCSV(){
-		//first verify that the start and end pos are all right
-		
-	    //second verify lines get between start and end pos are all right
-		
+		String logFilePath = "/tmp/118_http_C200_L30000_20130516102132.csv";
+		CSVRealTimeAnalyzer.analzyeCSV(logFilePath);
 		
 	}
 }
